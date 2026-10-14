@@ -72,6 +72,13 @@ blob_fixups: blob_fixups_user_type = {
         .replace_needed('libprotobuf-cpp-full.so','libprotobuf-cpp-full-21.7.so'),
     'vendor/bin/hw/android.hardware.biometrics.face-service.noth': blob_fixup()
         .replace_needed('libcamera2ndk_vendor.so', 'libcamera2ndk_vendor-v34.so'),
+    # Patch st_face_init_license() in libstfaceunlockppl.so to always return 0 (success),
+    # removing the license.lic file validation so the HAL works without the file.
+    'vendor/lib64/libstfaceunlockppl.so': blob_fixup()
+        .sig_replace(
+            'fd 7b bc a9 fd 03 00 91 f3 53 01 a9 b3 e3 00 91 a0 17 00 f9 e0 03 13 aa 8c b0 00 94',
+            'fd 7b bc a9 fd 03 00 91 00 00 80 52 fd 7b c4 a8 c0 03 5f d6 1f 20 03 d5 1f 20 03 d5',
+        ),
     'vendor/bin/qcc-vendor': blob_fixup()
         .add_needed('libbinder_shim.so'),
     'vendor/bin/qms': blob_fixup()
