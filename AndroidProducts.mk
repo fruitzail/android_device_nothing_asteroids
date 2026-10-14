@@ -4,4 +4,4 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/clover_asteroids.mk
+    $(LOCAL_DIR)/lineage_asteroids.mk

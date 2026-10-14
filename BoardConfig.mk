@@ -174,7 +174,9 @@ TARGET_KERNEL_EXT_MODULES := \
 
 # Partitions
 ifneq ($(PRODUCT_RO_FILE_SYSTEM), erofs)
--include vendor/clover/config/BoardConfigReservedSize.mk
+WITH_GMS := true
+-include vendor/lineage/config/BoardConfigReservedSize.mk
+-include vendor/pixel/gms/products/board.mk
 endif
 
 BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := odm product system system_dlkm system_ext vendor vendor_dlkm
