@@ -72,12 +72,24 @@ blob_fixups: blob_fixups_user_type = {
         .replace_needed('libprotobuf-cpp-full.so','libprotobuf-cpp-full-21.7.so'),
     'vendor/bin/hw/android.hardware.biometrics.face-service.noth': blob_fixup()
         .replace_needed('libcamera2ndk_vendor.so', 'libcamera2ndk_vendor-v34.so'),
-    # Patch st_face_init_license() in libstfaceunlockppl.so to always return 0 (success),
-    # removing the license.lic file validation so the HAL works without the file.
+    # Bypass SenseTime face unlock license verification:
+    # 1. Force __appProtect_sdk_protector_add_license_start to return 0 (success)
+    #    so license initialization marks g_is_licensed = 1 without reading license.lic.
+    # 2. Force __appProtect_sdk_protector_add_license_end to return 0 (success)
+    #    so caffe model authorization never returns -13 (ST_E_UNAUTHORIZED).
+    # 3. Patch model protector check in caffe model loaders to indicate models are authorized.
     'vendor/lib64/libstfaceunlockppl.so': blob_fixup()
         .sig_replace(
-            'fd 7b bc a9 fd 03 00 91 f3 53 01 a9 b3 e3 00 91 a0 17 00 f9 e0 03 13 aa 8c b0 00 94',
-            'fd 7b bc a9 fd 03 00 91 00 00 80 52 fd 7b c4 a8 c0 03 5f d6 1f 20 03 d5 1f 20 03 d5',
+            'fd 7b bd a9 fd 03 00 91 f3 53 01 a9 f4 03 00 aa f3 03 01 aa c0 0b 02 d0',
+            '00 00 80 52 c0 03 5f d6 1f 20 03 d5 1f 20 03 d5 1f 20 03 d5 1f 20 03 d5',
+        )
+        .sig_replace(
+            'fd 7b bb a9 fd 03 00 91 f3 53 01 a9 a0 17 00 f9 63 c3 ff 97 a1 17 40 f9',
+            '00 00 80 52 c0 03 5f d6 1f 20 03 d5 1f 20 03 d5 1f 20 03 d5 1f 20 03 d5',
+        )
+        .sig_replace(
+            '81 15 02 d0 21 00 71 39 01 00 00 b9 00 00 80 52 c0 03 5f d6',
+            '21 00 80 52 01 00 00 b9 00 00 80 52 c0 03 5f d6 1f 20 03 d5',
         ),
     'vendor/bin/qcc-vendor': blob_fixup()
         .add_needed('libbinder_shim.so'),
