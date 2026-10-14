@@ -39,9 +39,13 @@
              composition workloads such as blur/color conversion. Resource
              0x4280C000 maps to KGSL min_clock_mhz; the HAL releases this request
              when the mode ends. Thermal limits remain owned by the platform.
-             Base hints below originate from the source QTI volcano powerhint.xml. -->
+             Base hints below originate from the source QTI volcano powerhint.xml.
+             Blur/expensive-rendering GPU floor raised 644MHz (0x284) -> 763MHz (0x2FB),
+             two pwrlevel bins up, to stop the GPU DVFS ramp stutter when window blur
+             first engages (shade pull, recents). This is a min-clock floor, so it clamps
+             to the running bin's max on the 644MHz-capped volcano6i silicon. -->
         <Config Id="0x000010A5" Enable="true" Timeout="0" Target="volcano"
-                Resources="0x4280C000, 0x284" />
+                Resources="0x4280C000, 0x2FB" />
 
         <!-- video decode 30 fps non secure content tunings-->
         <!-- MPCTLV3_MIN_FREQ_CLUSTER_BIG_CORE_0, 0XA -->

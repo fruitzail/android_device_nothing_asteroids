@@ -6,7 +6,7 @@
 <PerfConfigsStore>
     <PerfConfigs>
         <Prop Name="vendor.perf.expensive_rendering" Value="1" />
-        <Prop Name="vendor.debug.enable.lm" Value="false" />
+        <Prop Name="vendor.debug.enable.lm" Value="true" />
         <Prop Name="vendor.debug.enable.memperfd" Value="false" />
         <Prop Name="ro.vendor.perf.lal" Value="false" />
         <Prop Name="ro.vendor.perf.lgl" Value="false" />
